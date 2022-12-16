@@ -45,6 +45,13 @@ module.exports = {
           filename: "assets/img/[name][ext]",
         },
       },
+      {
+        test: /\.(eot|woff2|woff|ttf)/i,
+        type: "asset/resource",
+        generator: {
+          filename: "assets/fonts/[hash][ext]",
+        },
+      },
     ],
   },
   plugins: [
@@ -52,6 +59,7 @@ module.exports = {
       inject: true,
       template: "./public/index.html",
       filename: "./index.html",
+      favicon: "./src/assets/favicon.ico",
     }),
     new MiniCssExtractPlugin({
       filename: "[name].css",
