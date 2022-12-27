@@ -31,10 +31,15 @@ module.exports = {
         use: ["style-loader", "css-loader"],
       },
       {
-        test: /\.(gif)$/i,
+        test: /\.svg$/i,
+        issuer: /\.[jt]sx?$/,
+        use: ["@svgr/webpack"],
+      },
+      {
+        test: /\.jpg$/i,
         type: "asset/resource",
         generator: {
-          filename: "assets/img/[hash][ext]",
+          filename: "assets/jpg/[hash][ext]",
         },
       },
       {

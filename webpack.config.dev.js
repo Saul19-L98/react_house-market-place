@@ -39,10 +39,34 @@ module.exports = {
         use: ["style-loader", "css-loader"],
       },
       {
-        test: /\.(gif)$/i,
+        test: /\.svg$/i,
         type: "asset/resource",
         generator: {
-          filename: "assets/img/[name][ext]",
+          //remove this if not required
+          filename: "assets/svg/[name][ext]",
+        },
+        resourceQuery: /url/, // *.svg?url
+      },
+      {
+        test: /\.svg$/i,
+        issuer: /\.[jt]sx?$/,
+        resourceQuery: { not: [/url/] }, // exclude react component if *.svg?url
+        use: [
+          "babel-loader",
+          {
+            loader: "@svgr/webpack",
+            options: {
+              babel: false,
+              icon: true,
+            },
+          },
+        ],
+      },
+      {
+        test: /\.jpg$/i,
+        type: "asset/resource",
+        generator: {
+          filename: "assets/jpg/[name][ext]",
         },
       },
       {

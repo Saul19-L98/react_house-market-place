@@ -304,9 +304,9 @@ button {
 .showPassword {
   cursor: pointer;
   position: absolute;
-  top: -4%;
-  right: 1%;
-  padding: 1rem;
+  top: 15%;
+  right: 4%;
+  object-fit: cover;
 }
 
 .forgotPasswordLink {
@@ -314,6 +314,10 @@ button {
   color: #00cc66;
   font-weight: 600;
   text-align: right;
+  display: inline-block;
+  position: absolute;
+  right: 50%;
+  transform: translateX(50%);
 }
 
 .signInBar,
