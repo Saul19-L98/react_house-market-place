@@ -13,6 +13,7 @@ import {
 import { db } from "../firebase.config";
 import { toast } from "react-toastify";
 import Spinner from "../components/Spinner.jsx";
+import ListingItem from "../components/ListingItem.jsx";
 
 function Category() {
   const [listings, setListings] = useState(null);
@@ -33,21 +34,46 @@ function Category() {
 
         //Execute query
         const querySnap = await getDocs(q);
-        console.log(querySnap);
-        let listings = [];
+
+        const listings = [];
         querySnap.forEach((doc) => {
-          console.log(doc.data());
+          listings.push({
+            id: doc.id,
+            data: doc.data(),
+          });
         });
+        setListings(listings);
+        setLoading(false);
       } catch (error) {
-        console.log(error);
         toast.error("Could not find any data from storage");
       }
     };
     fetchListings();
-  }, []);
+  }, [params.categoryName]);
   return (
-    <div>
-      <h1>Hello from Categories</h1>
+    <div className="category">
+      <header>
+        <h1 className="pageHeader">Offers</h1>
+      </header>
+      {loading ? (
+        <Spinner />
+      ) : listings && listings.length > 0 ? (
+        <>
+          <main>
+            <ul className="categoryListings">
+              {listings.map((listing, index) => (
+                <ListingItem
+                  key={index}
+                  listing={listing.data}
+                  id={listing.id}
+                />
+              ))}
+            </ul>
+          </main>
+        </>
+      ) : (
+        <p>There are no current offers</p>
+      )}
     </div>
   );
 }
