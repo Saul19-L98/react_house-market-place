@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import ArrowRightIcon from "../assets/svg/keyboardArrowRightIcon.svg";
 import visibilityIcon from "../assets/svg/visibilityIcon.svg?url";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import OAuth from "../components/OAuth.jsx";
+import { toast } from "react-toastify";
 
 function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
@@ -35,8 +37,9 @@ function SignIn() {
       if (userCredential.user) {
         navigate("/");
       }
+      toast.success("Long in successful 😎");
     } catch (error) {
-      console.log(error);
+      toast.error("Bad user credentials 😯");
     }
   };
 
@@ -71,7 +74,7 @@ function SignIn() {
                   onClick={() => setShowPassword((prevState) => !prevState)}
                 />
               </div>
-              <Link to="/forgot-password" className="forgotPasswordLink">
+              <Link to="/forget-password" className="forgotPasswordLink">
                 Forgot Password
               </Link>
               <div className="signInBar">
@@ -81,7 +84,9 @@ function SignIn() {
                 </button>
               </div>
             </form>
-            {/* Google OAuth */}
+
+            <OAuth />
+
             <Link to="/sign-up" className="registerLink">
               Sign Up Instead
             </Link>

@@ -1,4 +1,5 @@
 /* montserrat-200 - latin */
+@import url(react-toastify/dist/ReactToastify.css);
 @font-face {
     font-family: 'Montserrat';
     font-style: normal;
@@ -736,6 +737,7 @@ button {
   display: flex;
   justify-content: space-between;
   max-width: 500px;
+  margin:0 auto;
 }
 
 .personalDetailsText {
@@ -754,6 +756,7 @@ button {
   padding: 1rem;
   box-shadow: rgba(0, 0, 0, 0.2);
   max-width: 500px;
+  margin:0 auto;
 }
 
 .profileDetails {

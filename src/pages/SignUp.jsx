@@ -10,6 +10,8 @@ import {
 } from "firebase/auth";
 import { setDoc, doc, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase.config";
+import OAuth from "../components/OAuth.jsx";
+import { toast } from "react-toastify";
 
 function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
@@ -51,8 +53,11 @@ function SignUp() {
       await setDoc(doc(db, "users", user.uid), formDataCopy);
 
       navigate("/");
+      toast.success("Account was successfuly created 😁");
     } catch (error) {
-      console.log(error);
+      toast.error(
+        "Account was not created, check out if you put the correct information in the fields 🤐"
+      );
     }
   };
 
@@ -105,7 +110,7 @@ function SignUp() {
                 </button>
               </div>
             </form>
-            {/* Google OAuth */}
+            <OAuth />
             <Link to="/sign-in" className="registerLink">
               Sign In Instead
             </Link>
