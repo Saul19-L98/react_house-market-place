@@ -10,6 +10,8 @@ import SignIn from "./pages/SignIn.jsx";
 import SignUp from "./pages/SignUp.jsx";
 import ForgetPassword from "./pages/ForgetPassword.jsx";
 import Navbar from "./components/Navbar.jsx";
+import CreateListings from "./pages/CreateListings.jsx";
+import Listing from "./pages/Listing.jsx";
 
 function App() {
   return (
@@ -25,6 +27,11 @@ function App() {
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/forget-password" element={<ForgetPassword />} />
+          <Route path="/create-listing" element={<CreateListings />} />
+          <Route
+            path="/category/:categoryName/:listingId"
+            element={<Listing />}
+          />
         </Routes>
         <Navbar />
       </Router>

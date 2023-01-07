@@ -798,7 +798,7 @@ button {
   border-radius: 1rem;
   padding: 0.25rem 1rem;
   box-shadow: rgba(0, 0, 0, 0.2);
-  margin-top: 2rem;
+  margin: 2rem auto 0 auto;
   font-weight: 600;
   max-width: 500px;
   display: flex;
@@ -897,7 +897,7 @@ button {
 .formInputFile {
   width: 100%;
 }
-.formInputFile::-webkit-file-upload-button {
+.formInputFile::file-selector-button {
   background-color: #00cc66;
   border: none;
   color: #ffffff;
