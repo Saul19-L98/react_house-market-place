@@ -11,6 +11,7 @@ import SignUp from "./pages/SignUp.jsx";
 import ForgetPassword from "./pages/ForgetPassword.jsx";
 import Navbar from "./components/Navbar.jsx";
 import CreateListings from "./pages/CreateListings.jsx";
+import EditListing from "./pages/EditListing.jsx";
 import Listing from "./pages/Listing.jsx";
 import ContactLandLord from "./pages/ContactLandLord.jsx";
 
@@ -29,6 +30,7 @@ function App() {
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/forget-password" element={<ForgetPassword />} />
           <Route path="/create-listing" element={<CreateListings />} />
+          <Route path="/edit-listing/:listingId" element={<EditListing />} />
           <Route
             path="/category/:categoryName/:listingId"
             element={<Listing />}

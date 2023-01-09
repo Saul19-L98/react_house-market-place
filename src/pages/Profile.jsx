@@ -10,6 +10,8 @@ import {
   where,
   orderBy,
   deleteDoc,
+  limit,
+  startAfter,
 } from "firebase/firestore";
 ////////////////////////////////////////////////////////////////
 //To delete storage
@@ -28,6 +30,7 @@ function Profile() {
   const [loading, setLoading] = useState(true);
   const [listings, setListings] = useState(null);
   const [changeDetails, setChangeDetails] = useState(false);
+  const [lastFetchedListing, setLastFetchedListing] = useState(null);
   const [formData, setFormData] = useState({
     name: auth.currentUser.displayName,
     email: auth.currentUser.email,
@@ -41,9 +44,14 @@ function Profile() {
       const q = query(
         listingsRef,
         where("userRef", "==", auth.currentUser.uid),
-        orderBy("timestamp", "desc")
+        orderBy("timestamp", "desc"),
+        limit(10)
       );
       const querySnap = await getDocs(q);
+
+      const lastVisible = querySnap.docs[querySnap.docs.length - 1];
+      setLastFetchedListing(lastVisible);
+
       let listings = [];
       querySnap.forEach((doc) => {
         return listings.push({
@@ -62,6 +70,41 @@ function Profile() {
   useEffect(() => {
     fetchUserListings();
   }, [auth.currentUser.uid]);
+
+  const onfetchMoreListings = async () => {
+    try {
+      //Fet reference
+      const listingsRef = collection(db, "listings");
+      //Create a query
+      const q = query(
+        listingsRef,
+        where("userRef", "==", auth.currentUser.uid),
+        orderBy("timestamp", "desc"),
+        startAfter(lastFetchedListing),
+        limit(10)
+      );
+
+      //Execute query
+      const querySnap = await getDocs(q);
+
+      const lastVisible = querySnap.docs[querySnap.docs.length - 1];
+
+      setLastFetchedListing(lastVisible);
+
+      const listings = [];
+      querySnap.forEach((doc) => {
+        listings.push({
+          id: doc.id,
+          data: doc.data(),
+        });
+      });
+      //Keep the last 10 listings and add the new  10 listings
+      setListings((prevState) => [...prevState, ...listings]);
+      setLoading(false);
+    } catch (error) {
+      toast.error("Could not find any data from storage");
+    }
+  };
 
   const onLogOut = () => {
     auth.signOut();
@@ -148,6 +191,8 @@ function Profile() {
     }
   };
 
+  const onEdit = (listingId) => navigate(`/edit-listing/${listingId}`);
+
   return (
     <div className="profile">
       <header className="profileHeader">
@@ -205,12 +250,20 @@ function Profile() {
                   listing={listing.data}
                   id={listing.id}
                   onDelete={() => onDelete(listing.id)}
+                  onEdit={() => onEdit(listing.id)}
                 />
               ))}
             </ul>
           </>
         )}
       </main>
+      <br />
+      <br />
+      {lastFetchedListing && (
+        <p className="loadMore" onClick={onfetchMoreListings}>
+          Load More
+        </p>
+      )}
     </div>
   );
 }
