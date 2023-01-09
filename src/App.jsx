@@ -1,10 +1,10 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import PrivateRoute from "./routes/private/PrivateRoute.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Explore from "./pages/Explore.jsx";
 import Offers from "./pages/Offers.jsx";
 import Category from "./pages/Category.jsx";
+import PrivateRoute from "./routes/private/PrivateRoute.jsx";
 import Profile from "./pages/Profile.jsx";
 import SignIn from "./pages/SignIn.jsx";
 import SignUp from "./pages/SignUp.jsx";
