@@ -102,7 +102,7 @@ function CreateListings() {
       return new Promise((resolve, reject) => {
         const storage = getStorage();
         const fileName = `${auth.currentUser.uid}-${image.name}-${uuidv4()}`;
-        const storageRef = ref(storage, "images/" + fileName);
+        const storageRef = ref(storage, "image/" + fileName);
         const uploadTask = uploadBytesResumable(storageRef, image);
         uploadTask.on(
           "state_changed",

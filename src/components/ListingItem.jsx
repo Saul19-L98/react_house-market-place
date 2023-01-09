@@ -8,6 +8,13 @@ function ListingItem({ listing, id, onDelete }) {
   //const { data } = listing;
   return (
     <li className="categoryListing">
+      {onDelete && (
+        <DeleteIcon
+          className="removeIcon"
+          fill="rgb(231,76,60)"
+          onClick={() => onDelete(id, listing.name)}
+        />
+      )}
       <Link
         to={`/category/${listing.type}/${id}`}
         className="categoryListingLink"
@@ -47,13 +54,6 @@ function ListingItem({ listing, id, onDelete }) {
           </div>
         </div>
       </Link>
-      {onDelete && (
-        <DeleteIcon
-          className="removeIcon"
-          fill="rgb(231,76,60)"
-          onClick={() => onDelete(id, listing.name)}
-        />
-      )}
     </li>
   );
 }

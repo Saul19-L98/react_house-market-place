@@ -12,6 +12,7 @@ import ForgetPassword from "./pages/ForgetPassword.jsx";
 import Navbar from "./components/Navbar.jsx";
 import CreateListings from "./pages/CreateListings.jsx";
 import Listing from "./pages/Listing.jsx";
+import ContactLandLord from "./pages/ContactLandLord.jsx";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
             path="/category/:categoryName/:listingId"
             element={<Listing />}
           />
+          <Route path="/contact/:landlordId" element={<ContactLandLord />} />
         </Routes>
         <Navbar />
       </Router>

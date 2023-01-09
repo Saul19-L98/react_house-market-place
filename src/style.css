@@ -1,5 +1,6 @@
 /* montserrat-200 - latin */
 @import url(react-toastify/dist/ReactToastify.css);
+@import url(swiper/swiper-bundle.css);
 @font-face {
     font-family: 'Montserrat';
     font-style: normal;
