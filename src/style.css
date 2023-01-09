@@ -397,7 +397,7 @@ button {
   color: #00cc66;
   font-weight: 600;
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 10rem;
 }
 
 @media (min-width: 1217px) {
@@ -924,4 +924,35 @@ button {
   margin-left: 1rem;
   font-size: 0.8rem;
   opacity: 0.75;
+}
+
+/* Added for the editing images part */
+.editListingImgContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+}
+
+.editListingImg [type=checkbox] {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  height: 30px;
+  width: 30px;
+}
+
+.editListingImg {
+  width: 290px;
+  height: 230px;
+  border-radius: 25px;
+  position: relative;
+}
+
+.editListingImgText {
+  position: absolute;
+  top: 5px;
+  padding: 10px;
+  font-weight: bold;
+  color: white;
+  background-color: black;
 }

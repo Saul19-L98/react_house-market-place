@@ -21,7 +21,7 @@ function Listing() {
       const docRef = doc(db, "listings", params.listingId);
       const docSnap = await getDoc(docRef);
       if (docSnap.data()) {
-        console.log(docSnap.data().imageUrls);
+        //console.log(docSnap.data().imageUrls);
         setListing(docSnap.data());
         setLoading(false);
       }

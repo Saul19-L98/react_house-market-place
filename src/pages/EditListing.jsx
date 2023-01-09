@@ -7,6 +7,7 @@ import {
   getStorage,
   ref,
   uploadBytesResumable,
+  deleteObject, //TODO: Import deleteObject function from firebase/storage
   getDownloadURL,
 } from "firebase/storage";
 import { doc, updateDoc, getDoc, serverTimestamp } from "firebase/firestore";
@@ -35,6 +36,7 @@ function EditListings() {
   const [loading, setLoading] = useState(false);
   const [listing, setListing] = useState(false);
   const [formData, setFormData] = useState(initialState);
+  const [imagesToRemove, setImagesToRemove] = useState([]); //TODO: instantiate state as an array for Images the user wants to delete
 
   const {
     type,
@@ -138,13 +140,13 @@ function EditListings() {
           (snapshot) => {
             const progress =
               (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log("Upload is " + progress + "% done");
+            //console.log("Upload is " + progress + "% done");
             switch (snapshot.state) {
               case "paused":
-                console.log("Upload is paused");
+                //console.log("Upload is paused");
                 break;
               case "running":
-                console.log("Upload is running");
+                //console.log("Upload is running");
                 break;
             }
           },
@@ -162,17 +164,77 @@ function EditListings() {
       });
     };
 
-    const imageUrls = await Promise.all(
-      [...images].map((image) => storeImage(image))
-    ).catch(() => {
+    //TODO: Throw an error if new image Total is not 6 or less
+    const availableImageStorage =
+      6 - listing.imageUrls.length + imagesToRemove.length;
+    // Return an error only if new  images were added AND the total files exceeds 6.
+    if (images && images.length > availableImageStorage) {
       setLoading(false);
-      toast.error("Images not uploaded");
+      toast.error("Image Upload failed - Too many images for this");
       return;
+    }
+    //TODO: If new images were uploaded, Store the returned imageUrls in a new array
+    let newImageUrls;
+    if (images) {
+      newImageUrls = await Promise.all(
+        [...images].map((image) => storeImage(image))
+      ).catch(() => {
+        setLoading(false);
+        toast.error("Images not uploaded");
+        return;
+      });
+    }
+    //TODO: Function to Delete an Image from Storage.
+    const deleteImage = async (imgUrl) => {
+      //Split Url to get the filename in the middle
+      let fileName = imgUrl.split("image%2F");
+      fileName = fileName[1].split("?alt");
+      fileName = fileName[0];
+      const storage = getStorage();
+      //Create a reference to the file to delete
+      const imgRef = ref(storage, `image/${fileName}`);
+      //Returns a promise
+      return deleteObject(imgRef);
+    };
+
+    //TODO: Delete each image in imagesToRemove from storage
+    imagesToRemove.forEach(async (imgUrl) => {
+      await deleteImage(imgUrl) //Handle the returned promise
+        .then(() => {
+          toast.success("Image was successfully removed  from storage");
+        })
+        .catch((err) => {
+          console.error(err.message);
+          toast.error("Deletion failed");
+          setLoading(false);
+        });
     });
 
+    //TODO: Remove all imagesToRemove from current imageUrls for this listing
+    const remainingListingImages = listing.imageUrls.filter(
+      (val) => !imagesToRemove.includes(val)
+    );
+
+    //TODO: Merge ImageUrls with newImageUrls (ifdefined) --> Then Delete newImageUrls
+    let mergedImageUrls;
+    if (newImageUrls) {
+      mergedImageUrls = [...remainingListingImages, ...newImageUrls];
+    } else {
+      mergedImageUrls = [...remainingListingImages];
+    }
+
+    // const imageUrls = await Promise.all(
+    //   [...images].map((image) => storeImage(image))
+    // ).catch(() => {
+    //   setLoading(false);
+    //   toast.error("Images not uploaded");
+    //   return;
+    // });
+
+    //Create a separate copy of the formData, then add/delete fields as needed to match collection keys.
     const formDataCopy = {
       ...formData,
-      imageUrls,
+      imageUrls: mergedImageUrls,
       geolocation,
       timestamp: serverTimestamp(),
     };
@@ -216,6 +278,22 @@ function EditListings() {
         ...prevState,
         [e.target.id]: boolean ?? e.target.value,
       }));
+    }
+  };
+
+  // TODO: handleChange on image checkboxes
+  const handleChange = (e) => {
+    e.preventDefault();
+    if (e.target.checked) {
+      // Case 1 : The user checks the box
+      setImagesToRemove([...imagesToRemove, e.target.value]);
+    } else {
+      // Case 2  : The user unchecks the box
+      setImagesToRemove((current) =>
+        current.filter((url) => {
+          return url !== e.target.value;
+        })
+      );
     }
   };
 
@@ -429,7 +507,46 @@ function EditListings() {
               />
             </>
           )}
-          <label className="formLabel">Images</label>
+          {/* <label className="formLabel">Images</label> */}
+          {/* TODO: Display Current Images (Noting Cover) with Delete Buttons --> Then display "Add Image" Option */}
+          <label className="formLabel">Listing Images</label>
+          <p style={{ paddingLeft: "10px", fontSize: "0.8rem" }}>
+            DELETE: Check the box of each image you wish to delete
+          </p>
+          <div className="editListingImgContainer">
+            {listing?.imageUrls &&
+              listing.imageUrls.map((img, index) => (
+                <div
+                  key={index}
+                  className="editListingImg"
+                  style={{
+                    background: `url(${img}) center no-repeat`,
+                    backgroundSize: "cover",
+                  }}
+                >
+                  {index === 0 && <p className="editListingImgText">Cover</p>}
+
+                  <input
+                    type="checkbox"
+                    id="imageDelete"
+                    name="imageDelete"
+                    value={img}
+                    onChange={handleChange}
+                  />
+                </div>
+              ))}
+          </div>
+          {/* Displays the number of remaining spots available after checked images are deleted */}
+          <p style={{ paddingLeft: "10px", fontSize: "0.8rem" }}>
+            ADD: Choose files to add. (
+            {listing?.imageUrls &&
+              imagesToRemove &&
+              ` ${
+                6 - listing.imageUrls.length + imagesToRemove.length
+              } image slots remaining`}{" "}
+            - Max 6 total )
+          </p>
+          {/*  */}
           <input
             className="formInputFile"
             type="file"

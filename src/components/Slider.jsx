@@ -6,7 +6,6 @@ import { db } from "../firebase.config";
 import { Navigation, Pagination, Scrollbar, A11y, Autoplay } from "swiper";
 import { Swiper as SwiperComponent, SwiperSlide } from "swiper/react";
 import Spinner from "./Spinner.jsx";
-import { async } from "@firebase/util";
 
 function Slider() {
   const [loading, setLoading] = useState(true);
@@ -24,7 +23,7 @@ function Slider() {
           data: doc.data(),
         });
       });
-      console.log(listings);
+      // console.log(listings);
       setListings(listings);
       setLoading(false);
     };
@@ -57,7 +56,9 @@ function Slider() {
         >
           {listings.map(({ data, id }) => {
             const imgUrl = data.imageUrls[0];
-            console.log(data, imgUrl);
+            {
+              /* console.log(data, imgUrl); */
+            }
             return (
               <SwiperSlide
                 key={id}

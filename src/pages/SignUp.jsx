@@ -42,7 +42,7 @@ function SignUp() {
         password
       );
       const user = userCredential.user;
-      console.log(user);
+      // console.log(user);
       updateProfile(auth.currentUser, {
         displayName: name,
       });
