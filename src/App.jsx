@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar.jsx";
 import Explore from "./pages/Explore.jsx";
 import Offers from "./pages/Offers.jsx";
 import Category from "./pages/Category.jsx";
@@ -12,7 +13,6 @@ import CreateListings from "./pages/CreateListings.jsx";
 import EditListing from "./pages/EditListing.jsx";
 import Listing from "./pages/Listing.jsx";
 import ContactLandLord from "./pages/ContactLandLord.jsx";
-import Navbar from "./components/Navbar.jsx";
 import { ToastContainer } from "react-toastify";
 
 function App() {
