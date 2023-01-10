@@ -4,7 +4,7 @@ import ExploreIcon from "../assets/svg/exploreIcon.svg";
 import OfferIcon from "../assets/svg/localOfferIcon.svg";
 import PersonOutlineIcon from "../assets/svg/personIcon.svg";
 
-function Navbar() {
+function Footbar() {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -74,4 +74,4 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default Footbar;
