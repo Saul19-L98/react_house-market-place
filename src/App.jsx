@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import NotFound from "./pages/NotFound.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Explore from "./pages/Explore.jsx";
 import Offers from "./pages/Offers.jsx";
@@ -36,6 +37,7 @@ function App() {
             element={<Listing />}
           />
           <Route path="/contact/:landlordId" element={<ContactLandLord />} />
+          <Route path="/*" element={<NotFound />} />
         </Routes>
         <Navbar />
       </Router>
