@@ -39,7 +39,7 @@ function App() {
           <Route path="/contact/:landlordId" element={<ContactLandLord />} />
           <Route path="/*" element={<NotFound />} />
         </Routes>
-        {Navbar && <Navbar />}
+        <Navbar />
       </Router>
       <ToastContainer />
     </>
