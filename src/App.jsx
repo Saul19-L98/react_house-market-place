@@ -1,5 +1,4 @@
 import React from "react";
-import { ReactDOM } from "react";
 import Navbar from "./components/Navbar.jsx";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Explore from "./pages/Explore.jsx";
