@@ -28,7 +28,7 @@ function EditListings() {
     offer: false,
     regularPrice: 0,
     discountedPrice: 0,
-    images: {},
+    images: [],
     latitude: 0,
     longitude: 0,
   };
@@ -104,7 +104,7 @@ function EditListings() {
       toast.error("Discounted price needs to be less than regular price");
       return;
     }
-    if (images.length > 6) {
+    if (images && images.length > 6) {
       setLoading(false);
       toast.error("Max 6 images");
       return;
@@ -128,6 +128,7 @@ function EditListings() {
       geolocation.lng = longitude;
       location = address;
     }
+
     //Store images in firebase
     const storeImage = async (image) => {
       return new Promise((resolve, reject) => {
@@ -232,9 +233,11 @@ function EditListings() {
     // });
 
     //Create a separate copy of the formData, then add/delete fields as needed to match collection keys.
+
     const formDataCopy = {
       ...formData,
-      imageUrls: mergedImageUrls,
+      imageUrls:
+        imagesToRemove.length !== 0 ? mergedImageUrls : listing.imageUrls,
       geolocation,
       timestamp: serverTimestamp(),
     };
@@ -547,15 +550,17 @@ function EditListings() {
             - Max 6 total )
           </p>
           {/*  */}
-          <input
-            className="formInputFile"
-            type="file"
-            id="images"
-            onChange={onMutate}
-            min="50"
-            accept=".jpg,.png,.jpeg"
-            multiple
-          />
+          {imagesToRemove.length !== 0 && (
+            <input
+              className="formInputFile"
+              type="file"
+              id="images"
+              onChange={onMutate}
+              min="50"
+              accept=".jpg,.png,.jpeg"
+              multiple
+            />
+          )}
           <button type="submit" className="primaryButton  createListingButton">
             Edit Listing
           </button>
