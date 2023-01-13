@@ -32,7 +32,9 @@ function EditListings() {
     latitude: 0,
     longitude: 0,
   };
-  const [geolocationEnabled, setGeolocationEnabled] = useState(true);
+
+  // (setted from true to fall)http:, protocal  is active in this API, so I can't  used in the server with SSL https active
+  const [geolocationEnabled, setGeolocationEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [listing, setListing] = useState(false);
   const [formData, setFormData] = useState(initialState);
@@ -74,7 +76,12 @@ function EditListings() {
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         setListing(docSnap.data());
-        setFormData({ ...docSnap.data(), address: docSnap.data().location });
+        setFormData({
+          ...docSnap.data(),
+          address: docSnap.data().location,
+          latitude: docSnap.data().geolocation.lat,
+          longitude: docSnap.data().geolocation.lng,
+        });
         setLoading(false);
       } else {
         navigate("/profile");

@@ -31,7 +31,8 @@ function CreateListings() {
     latitude: 0,
     longitude: 0,
   };
-  const [geolocationEnabled, setGeolocationEnabled] = useState(true);
+  // (setted from true to fall)http:, protocal  is active in this API, so I can't  used in the server with SSL https active
+  const [geolocationEnabled, setGeolocationEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState(initialState);
 
